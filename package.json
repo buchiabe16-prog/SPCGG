@@ -1,0 +1,8 @@
+{
+  "name": "spcgg-free-automation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sends queued/scheduled push notifications and daily event reminders (runs on GitHub Actions, no Firebase Blaze plan needed)",
+  "engines": { "node": ">=20" },
+  "dependencies": { "firebase-admin": "^12.6.0" }
+}
