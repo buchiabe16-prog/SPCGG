@@ -6,7 +6,9 @@ const admin = require("firebase-admin");
 const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
 if (!raw) { console.error("Missing FIREBASE_SERVICE_ACCOUNT secret."); process.exit(1); }
 admin.initializeApp({ credential: admin.credential.cert(JSON.parse(raw)) });
-const db = admin.firestore();
+// Your Firestore database is named "default" (no brackets), so it must be selected by name.
+const { getFirestore } = require("firebase-admin/firestore");
+const db = getFirestore(admin.app(), process.env.FIRESTORE_DATABASE_ID || "default");
 
 const TOPICS = ["all", "lang_am", "lang_en"];
 
