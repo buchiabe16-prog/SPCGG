@@ -10,7 +10,7 @@ admin.initializeApp({ credential: admin.credential.cert(JSON.parse(raw)) });
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore(admin.app(), process.env.FIRESTORE_DATABASE_ID || "default");
 
-const TOPICS = ["all", "lang_am", "lang_en"];
+const TOPICS = ["all", "lang_am", "lang_en", "ev_am", "ev_en"];
 
 function push(d) {
   const topic = TOPICS.includes(d.topic) ? d.topic : "all";
@@ -89,8 +89,8 @@ async function sendReminders() {
     const en = daysBefore === 0 ? "Today" : daysBefore === 1 ? "Tomorrow" : `In ${daysBefore} days`;
     const am = daysBefore === 0 ? "ዛሬ" : daysBefore === 1 ? "ነገ" : `ከ${daysBefore} ቀን በኋላ`;
     try {
-      await push({ topic: "lang_am", title: e.titleAm || e.titleEn, body: `${am}፦ ${e.metaAm || ""}`.trim() });
-      await push({ topic: "lang_en", title: e.titleEn || e.titleAm, body: `${en}: ${e.metaEn || ""}`.trim() });
+      await push({ topic: "ev_am", title: e.titleAm || e.titleEn, body: `${am}፦ ${e.metaAm || ""}`.trim() });
+      await push({ topic: "ev_en", title: e.titleEn || e.titleAm, body: `${en}: ${e.metaEn || ""}`.trim() });
       await db.collection("outbox").add({
         title: `[auto] ${e.titleEn || e.titleAm || "Event"}`, body: "Automatic event reminder", topic: "all",
         by: "system", ts: Date.now(), status: "sent",
